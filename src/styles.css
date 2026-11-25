@@ -1,0 +1,320 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Sakina Tours palette
+  deep green  #075440  brand, headers, primary actions
+  sand gold   #B88832  restrained accent, rules, focus ring
+  warm ivory  #FAF7EF  page washes
+  basalt      #303632  body text
+  white       #FFFFFF  cards and surfaces
+*/
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.29 0.008 150);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.29 0.008 150);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.29 0.008 150);
+
+  --primary: oklch(0.362 0.066 165);
+  --primary-foreground: oklch(0.985 0.008 88);
+  --primary-soft: oklch(0.46 0.058 165);
+  --primary-deep: oklch(0.285 0.055 165);
+
+  --gold: oklch(0.654 0.104 78);
+  --gold-soft: oklch(0.78 0.062 82);
+  --gold-foreground: oklch(0.24 0.032 78);
+
+  --ivory: oklch(0.975 0.011 88);
+  --ivory-deep: oklch(0.945 0.016 88);
+
+  --basalt: oklch(0.29 0.008 150);
+  --basalt-soft: oklch(0.47 0.008 150);
+
+  --secondary: oklch(0.975 0.011 88);
+  --secondary-foreground: oklch(0.29 0.008 150);
+  --muted: oklch(0.96 0.009 88);
+  --muted-foreground: oklch(0.5 0.01 150);
+  --accent: oklch(0.954 0.018 82);
+  --accent-foreground: oklch(0.285 0.055 165);
+
+  --destructive: oklch(0.52 0.176 25);
+  --destructive-foreground: oklch(0.985 0.008 88);
+
+  --border: oklch(0.9 0.012 88);
+  --input: oklch(0.88 0.012 88);
+  --ring: var(--gold);
+
+  --radius: 0.625rem;
+  --header-height: 4.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-deep: var(--primary-deep);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-ivory: var(--ivory);
+  --color-ivory-deep: var(--ivory-deep);
+  --color-basalt: var(--basalt);
+  --color-basalt-soft: var(--basalt-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* One Latin family (Inter) and one Arabic family (Noto Kufi Arabic). */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: "Noto Kufi Arabic", ui-sans-serif, sans-serif;
+  --font-arabic-display: "Noto Kufi Arabic", ui-sans-serif, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/40;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Keeps in-page anchors clear of the sticky header. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04";
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-semibold text-primary-deep;
+    text-wrap: balance;
+    letter-spacing: -0.022em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Arabic uses its own families so the RTL side is never a downgrade. */
+  html[dir="rtl"] body {
+    font-family: var(--font-arabic);
+    letter-spacing: 0;
+  }
+
+  html[dir="rtl"] h1,
+  html[dir="rtl"] h2,
+  html[dir="rtl"] h3,
+  html[dir="rtl"] h4 {
+    font-family: var(--font-arabic-display);
+    letter-spacing: 0;
+    /* Kufi runs tall; a touch more leading keeps Arabic headings calm. */
+    line-height: 1.45;
+  }
+
+  /* Kufi has no italics and reads heavy at small sizes. */
+  html[dir="rtl"] em,
+  html[dir="rtl"] i {
+    font-style: normal;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-gold;
+  }
+
+  ::selection {
+    background: var(--gold-soft);
+    color: var(--gold-foreground);
+  }
+}
+
+@layer components {
+  /* Page shell and vertical rhythm, shared by every section. */
+  .shell {
+    @apply mx-auto w-full max-w-[78rem] px-5 sm:px-8 lg:px-12;
+  }
+
+  .section {
+    @apply py-14 sm:py-18 lg:py-24;
+  }
+
+  /* Tighter rhythm where two bands sit back to back. */
+  .section-tight {
+    @apply py-12 sm:py-14 lg:py-18;
+  }
+
+  .eyebrow {
+    @apply text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-gold-foreground/80;
+  }
+
+  html[dir="rtl"] .eyebrow {
+    letter-spacing: 0.08em;
+  }
+
+  .rule-gold {
+    @apply block h-px w-14 bg-gold/70;
+  }
+
+  .wash-ivory {
+    background: linear-gradient(180deg, var(--ivory) 0%, var(--background) 100%);
+  }
+
+  .wash-green {
+    background-color: var(--primary-deep);
+    background:
+      radial-gradient(120% 90% at 85% 0%, color-mix(in oklab, var(--primary-soft) 40%, transparent) 0%, transparent 60%),
+      linear-gradient(180deg, var(--primary-deep) 0%, var(--primary) 100%);
+  }
+
+  /* Subtle Madinah-inspired lattice, used sparingly behind dark sections. */
+  .lattice {
+    position: relative;
+  }
+
+  /* Painted as an overlay so it never replaces the band's own background. */
+  .lattice::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.16;
+    background-image:
+      linear-gradient(45deg, color-mix(in oklab, var(--gold) 10%, transparent) 25%, transparent 25%, transparent 75%, color-mix(in oklab, var(--gold) 10%, transparent) 75%),
+      linear-gradient(45deg, color-mix(in oklab, var(--gold) 10%, transparent) 25%, transparent 25%, transparent 75%, color-mix(in oklab, var(--gold) 10%, transparent) 75%);
+    background-position: 0 0, 32px 32px;
+    background-size: 64px 64px;
+  }
+
+  .lattice > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Dark bands: headings inherit the light text colour instead of deep green. */
+  .wash-green :where(h1, h2, h3, h4),
+  [data-on-dark] :where(h1, h2, h3, h4) {
+    color: #fff;
+  }
+
+  .ring-soft {
+    @apply ring-1 ring-border/70;
+  }
+
+  /* Clears the fixed mobile WhatsApp bar. */
+  .pb-mobile-bar {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  @media (min-width: 768px) {
+    .pb-mobile-bar {
+      padding-bottom: 0;
+    }
+  }
+}
+
+@keyframes reveal-word {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slow-zoom {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1.11);
+  }
+}
+
+.animate-reveal-word {
+  animation: reveal-word 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out both;
+}
+
+.animate-rise-in {
+  animation: rise-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.animate-slow-zoom {
+  animation: slow-zoom 18s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Directional glyphs (arrows, chevrons) mirror in RTL. */
+html[dir="rtl"] [data-flip-rtl="true"] {
+  transform: scaleX(-1);
+}
